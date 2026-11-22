@@ -1,5 +1,7 @@
 # repeat-pause for Hermes Agent
 
+> **Part of the seat**, a collection of Hermes plugins that work together: watch, decide, act, prove, hand off. This one covers **decide**: it stops a report from repeating itself. [See the whole collection](https://github.com/percyhendrux123-prog#the-seat-a-collection-of-hermes-plugins).
+
 ## What it does
 
 When an agent-backed cron job produces the same result three runs in a row, repeat-pause appends one notice to the third result. Later matches request Hermes's `[SILENT]` delivery behavior. When the result changes, it goes through normally and a new streak starts. **The job keeps running.** The plugin never pauses, edits, or removes it. The default notice shows the `hermes cron pause <job_id>` command for an operator who wants to stop the schedule.
