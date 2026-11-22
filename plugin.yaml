@@ -1,0 +1,41 @@
+name: repeat-pause
+version: 0.1.0
+manifest_version: 2
+api_version: 1
+description: Adds a notice to repeated agent-backed cron results and holds later identical deliveries without changing the schedule.
+author: P. K. Stewart
+license: MIT
+requires_hermes: ">=0.22.5"
+platforms: [macos, linux]
+provides_hooks:
+  - on_session_start
+  - post_tool_call
+  - transform_llm_output
+  - on_session_end
+config_schema:
+  threshold:
+    type: integer
+    default: 3
+    minimum: 2
+    description: Identical observed responses before the one-time notice. Minimum 2.
+  hold_repeats:
+    type: boolean
+    default: true
+    description: Hold further identical results after the notice.
+  ignore_numbers:
+    type: boolean
+    default: true
+    description: Ignore standalone numbers, ISO dates and times, and clock times when comparing.
+  notice:
+    type: string
+    default: "This job has sent the same result {n} runs in a row. Further identical results will be held until something changes. To end it, pause the job: hermes cron pause {job_id}"
+    description: Text appended once per streak, with {n} and {job_id} placeholders.
+  state_dir:
+    type: string
+    default: ""
+    description: Dedicated state directory. Empty means <HERMES_HOME>/repeat-pause.
+  forget_days:
+    type: integer
+    default: 30
+    minimum: 0
+    description: Streak rows older than this are ignored and pruned on updates.
